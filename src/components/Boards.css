@@ -1,0 +1,67 @@
+.boards {
+  width: 20vw;
+  height: auto;
+  overflow-y: auto;
+}
+.boards_overflow {
+  width: 20vw;
+  height: 79vh;
+  overflow-y: auto;
+}
+.add_section {
+  width: 95%;
+
+  display: flex;
+  justify-content: end;
+}
+.heading {
+  font-size: 3rem;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-style: "Roboto";
+  text-align: left;
+}
+.subheading {
+  font-weight: 600;
+}
+.board_header {
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  margin: auto;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  background-color: var(--theme_color);
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(208, 207, 207);
+  border-radius: 10px;
+  height: 2rem;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(148, 148, 148);
+}
+.add_btn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 0.1rem;
+  align-items: center;
+  width: 6rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: var(--theme_color);
+  border: none;
+  font-size: 1rem;
+}
+.overlay {
+}

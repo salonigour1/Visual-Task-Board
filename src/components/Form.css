@@ -1,0 +1,87 @@
+.add_form {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  width: 40vw;
+  height: auto;
+  font-style: "Roboto";
+  flex-direction: column;
+  display: none;
+  position: absolute;
+  left: 25%;
+  top: 5%;
+  box-shadow: 5px 5px 20px 15px rgb(188, 188, 188);
+}
+.visible {
+  display: flex;
+}
+.titleField {
+  width: 90%;
+  height: 2rem;
+  margin: 0.5rem;
+  font-size: 1.3rem;
+  border: 1.5px solid rgb(201, 200, 200);
+  border-radius: 0.5rem;
+  outline: none;
+  padding: 0.5rem;
+}
+.check {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  background-color: rgba(255, 255, 255, 0);
+}
+.descField {
+  width: 90%;
+  padding: 0.5rem;
+  height: 5rem;
+  margin: 0.5rem;
+  font-size: 1.3rem;
+  border: 1.5px solid rgb(201, 200, 200);
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+.overlay {
+  display: block;
+  backdrop-filter: blur(5px);
+  /* background-color: rgba(255, 255, 255, 0.7); */
+}
+.cross {
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  cursor: pointer;
+}
+.cross:hover {
+  border: 2px dotted black;
+}
+label {
+  font-size: 1.5rem;
+}
+.bottomContainer {
+  display: flex;
+  width: 95%;
+  margin: 1rem auto;
+  justify-content: space-between;
+}
+select {
+  margin: 0.5rem;
+  height: 2rem;
+  width: 5rem;
+  font-size: 1rem;
+  border: 1.3px solid rgb(219, 219, 219);
+  border-radius: 6px;
+  outline: none;
+}
+.date {
+  margin: 0.5rem;
+  font-size: 1.2rem;
+
+  background-color: rgb(218, 218, 218);
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+}
