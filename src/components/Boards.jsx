@@ -40,7 +40,7 @@ function Boards({
               }
               key={curr.cid}
             >
-              <Card onClick={handleNa} key={curr.cid} cid={curr.cid} />
+              <Card onClick={handleNa} key={curr.cid} {...curr} bid={bid} />
             </div>
           ))}
         </div>

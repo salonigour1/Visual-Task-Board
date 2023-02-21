@@ -8,6 +8,7 @@ import moment from "moment";
 import UpdateForm from "./components/UpdateForm";
 function App() {
   const { boards } = useGobalData();
+
   const [open, setOpen] = useState({ state: false, boardId: "" });
   const [openEditable, setOpenEditable] = useState({
     state: false,

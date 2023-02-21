@@ -17,17 +17,13 @@ function UpdateForm({ setOpenEditable, openEditable }) {
     timeStamp: "",
     urgency: "",
   });
-  console.log(currentValues);
 
   useEffect(() => {
-    console.log(openEditable);
     if (!openEditable.cardId) return;
     const arr = boards
       .filter((curr) => openEditable.boardId === curr.bid)[0]
       .cards.filter((curr) => openEditable.cardId === curr.cid)[0];
     setCurrentValues(arr);
-
-    console.log(currentValues);
   }, [openEditable]);
 
   const handleChange = (name, value) => {
@@ -113,9 +109,10 @@ function UpdateForm({ setOpenEditable, openEditable }) {
             <button
               className="add_btn"
               type="button"
-              onClick={() =>
-                handleDelete(openEditable.boardId, openEditable.cardId)
-              }
+              onClick={() => {
+                handleDelete(openEditable.boardId, openEditable.cardId);
+                setOpenEditable({ state: false, boardId: "", cardId: "" });
+              }}
             >
               Delete
             </button>

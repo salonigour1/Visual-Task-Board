@@ -35,7 +35,7 @@ function Form({ open, setOpen }) {
       timeStamp: "",
       urgency: "",
     });
-    console.log(values);
+    setOpen({ state: false, boardId: "" });
   };
   return (
     <div className={open.state ? "check overlay" : "check"}>
