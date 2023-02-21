@@ -17,3 +17,18 @@ html {
 .App {
   position: relative;
 }
+.add_btn {
+  margin: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 0.3rem;
+  align-items: center;
+  width: 7rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: var(--theme_color);
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 550;
+}

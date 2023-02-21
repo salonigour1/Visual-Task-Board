@@ -4,9 +4,23 @@ import { IoIosAdd } from "react-icons/io";
 import "./Boards.css";
 import Card from "./Card";
 import { FiMoreVertical } from "react-icons/fi";
-function Boards({ bid, name, cards, setOpen, open }) {
+function Boards({
+  bid,
+  name,
+  cards,
+  setOpen,
+  open,
+  openEditable,
+  setOpenEditable,
+}) {
   const { boards } = useGobalData();
-  console.log(open.state);
+  // console.log(openEditable);
+  const handleIt = () => {
+    console.log("klsjdl");
+  };
+  const handleNa = () => {
+    console.log("handleNa");
+  };
   return (
     <>
       <div className="">
@@ -20,7 +34,14 @@ function Boards({ bid, name, cards, setOpen, open }) {
         </div>
         <div className={cards.length <= 3 ? "boards" : "boards_overflow"}>
           {cards.map((curr) => (
-            <Card key={curr.cid} cid={curr.cid} />
+            <div
+              onClick={() =>
+                setOpenEditable({ state: true, boardId: bid, cardId: curr.cid })
+              }
+              key={curr.cid}
+            >
+              <Card onClick={handleNa} key={curr.cid} cid={curr.cid} />
+            </div>
           ))}
         </div>
 

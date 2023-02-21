@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Form.css";
 import { RxCross1 } from "react-icons/rx";
 import moment from "moment";
@@ -6,47 +6,61 @@ import { MdDateRange } from "react-icons/md";
 import { HiSortDescending } from "react-icons/hi";
 import { TfiText } from "react-icons/tfi";
 import { useGobalData } from "../context";
-function Form({ open, setOpen }) {
-  const { ReturnId, handleAddCard } = useGobalData();
-  const [values, setValues] = useState({
+function UpdateForm({ setOpenEditable, openEditable }) {
+  const { ReturnId, handleAddCard, handleUpdateCard, handleDelete, boards } =
+    useGobalData();
+
+  const [currentValues, setCurrentValues] = useState({
     cid: "",
     subject: "",
     description: "",
     timeStamp: "",
     urgency: "",
   });
+  console.log(currentValues);
+
+  useEffect(() => {
+    console.log(openEditable);
+    if (!openEditable.cardId) return;
+    const arr = boards
+      .filter((curr) => openEditable.boardId === curr.bid)[0]
+      .cards.filter((curr) => openEditable.cardId === curr.cid)[0];
+    setCurrentValues(arr);
+
+    console.log(currentValues);
+  }, [openEditable]);
+
   const handleChange = (name, value) => {
     // console.log(name, value);
-    setValues({
-      ...values,
+    setCurrentValues({
+      ...currentValues,
       [name]: value,
-      timeStamp: moment().subtract(10, "days").calendar(),
-      cid: ReturnId("TASK"),
     });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    handleAddCard(open.boardId, values);
-    setValues({
+    handleUpdateCard(openEditable.boardId, openEditable.cardId, currentValues);
+    setCurrentValues({
       cid: "",
       subject: "",
       description: "",
       timeStamp: "",
       urgency: "",
     });
-    console.log(values);
+
+    setOpenEditable({ state: false, boardId: "", cardId: "" });
   };
   return (
-    <div className={open.state ? "check overlay" : "check"}>
-      <div className={`add_form ${open.state ? "visible" : ""}`}>
-        <div className="heading">Create New Task</div>
+    <div className={openEditable.state ? "check overlay" : "check"}>
+      <div className={`add_form ${openEditable.state ? "visible" : ""}`}>
+        <div className="heading">Update Task</div>
         <hr></hr>
         <form onSubmit={handleSubmit}>
           <div className="cross">
             <RxCross1
               size="25px"
-              onClick={() => setOpen({ state: false, boardId: "" })}
+              onClick={() => setOpenEditable({ state: false, boardId: "" })}
             />
           </div>
           <div>
@@ -54,7 +68,7 @@ function Form({ open, setOpen }) {
             &nbsp;<label>Title</label>
             <br></br>
             <input
-              value={values.subject}
+              value={currentValues.subject}
               name="subject"
               type="text"
               className="titleField"
@@ -66,7 +80,7 @@ function Form({ open, setOpen }) {
             &nbsp;<label>Description:</label>
             <br />
             <textarea
-              value={values.description}
+              value={currentValues.description}
               name="description"
               className="descField"
               onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -77,7 +91,7 @@ function Form({ open, setOpen }) {
               <label>Urgency:</label>
 
               <select
-                value={values.urgency}
+                value={currentValues.urgency}
                 name="urgency"
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
               >
@@ -89,14 +103,21 @@ function Form({ open, setOpen }) {
             <div>
               <MdDateRange />
               &nbsp;<label>Date</label>
-              <span className="date">
-                {moment().subtract(10, "days").calendar()}
-              </span>
+              <span className="date">{currentValues.timeStamp}</span>
             </div>
           </div>
-          <div className="buttonContainer">
+          <div className="buttonContainer_Update">
             <button className="add_btn" type="submit">
-              Add Card
+              Update
+            </button>
+            <button
+              className="add_btn"
+              type="button"
+              onClick={() =>
+                handleDelete(openEditable.boardId, openEditable.cardId)
+              }
+            >
+              Delete
             </button>
           </div>
         </form>
@@ -105,4 +126,4 @@ function Form({ open, setOpen }) {
   );
 }
 
-export default Form;
+export default UpdateForm;

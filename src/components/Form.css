@@ -1,5 +1,5 @@
 .add_form {
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 0.5rem;
   background-color: white;
   width: 40vw;
@@ -60,7 +60,7 @@
   border: 2px dotted black;
 }
 label {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 .bottomContainer {
   display: flex;
@@ -79,9 +79,17 @@ select {
 }
 .date {
   margin: 0.5rem;
-  font-size: 1.2rem;
-
+  font-size: 1rem;
+  color: grey;
   background-color: rgb(218, 218, 218);
   border-radius: 0.3rem;
-  padding: 0.5rem;
+  padding: 0.2rem;
+}
+.buttonContainer {
+  width: 80%;
+
+  margin: 1rem;
+}
+.buttonContainer_Update {
+  display: flex;
 }

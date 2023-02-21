@@ -15,14 +15,14 @@ const AppProvider = ({ children }) => {
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
       ],
     },
@@ -35,28 +35,28 @@ const AppProvider = ({ children }) => {
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
       ],
     },
@@ -66,31 +66,31 @@ const AppProvider = ({ children }) => {
       cards: [
         {
           cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "low",
+          subject: "saloni",
+          description: "fine ass",
+          timeStamp: "23/04/2021",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
         {
           cid: ReturnId("TASK"),
           subject: "",
           description: "",
           timeStamp: "",
-          urgency: "low",
+          urgency: "Low",
         },
       ],
     },
@@ -104,8 +104,16 @@ const AppProvider = ({ children }) => {
       ],
     },
   ]);
+  const handleAddCard = (bid, cardInfo) => {
+    console.log(bid, cardInfo);
+  };
+  const handleUpdateCard = (bid, cid, newInfo) => {
+    console.log(bid, cid, newInfo);
+  };
   return (
-    <AppContext.Provider value={{ loading, boards, ReturnId }}>
+    <AppContext.Provider
+      value={{ loading, boards, ReturnId, handleUpdateCard, handleAddCard }}
+    >
       {children}
     </AppContext.Provider>
   );
