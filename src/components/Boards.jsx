@@ -13,7 +13,7 @@ function Boards({
   openEditable,
   setOpenEditable,
 }) {
-  const { boards } = useGobalData();
+  const { boards, handleDeleteBoard } = useGobalData();
   // console.log(openEditable);
   const handleIt = () => {
     console.log("klsjdl");
@@ -21,15 +21,40 @@ function Boards({
   const handleNa = () => {
     console.log("handleNa");
   };
+  const [showDelete, setDelete] = useState(false);
   return (
     <>
-      <div className="">
+      <div className="board">
         <div className="board_header">
           <div className="subheading">
-            {name}&nbsp;&nbsp;&nbsp;{cards.length}
+            {name}&nbsp;&nbsp;&nbsp;{cards.length} {bid}
           </div>
+          {/* <div>
+            <details>
+              <summary>
+                <FiMoreVertical
+                  size="25px"
+                  onClick={() => setDelete(!showDelete)}
+                />
+              </summary>
+              <div className="delete_board visible_deleteBoard">
+                Delete Board
+              </div>
+            </details>
+          </div> */}
           <div>
-            <FiMoreVertical size="25px" />
+            <FiMoreVertical
+              size="25px"
+              onClick={() => setDelete(!showDelete)}
+            />
+          </div>
+          <div
+            className={`delete_board ${
+              showDelete ? "visible_deleteBoard" : ""
+            }`}
+            onClick={() => handleDeleteBoard(bid)}
+          >
+            Delete Board
           </div>
         </div>
         <div className={cards.length <= 3 ? "boards" : "boards_overflow"}>

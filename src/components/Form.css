@@ -10,6 +10,7 @@
   position: absolute;
   left: 25%;
   top: 5%;
+  z-index: 12;
   box-shadow: 5px 5px 20px 15px rgb(188, 188, 188);
 }
 .visible {
@@ -32,6 +33,7 @@
   width: 100vw;
   height: 100vh;
   display: none;
+  z-index: 10;
   background-color: rgba(255, 255, 255, 0);
 }
 .descField {

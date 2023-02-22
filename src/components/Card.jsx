@@ -6,10 +6,10 @@ function Card({ bid, cid, subject, description, timeStamp, urgency }) {
   const { handleDragEnd, handleDragEnter } = useGobalData();
   return (
     <div
-      className="card"
+      className="card grab"
       draggable
-      onDragEnd={() => handleDragEnd(bid, cid)}
-      onDragEnter={() => handleDragEnter(bid, cid)}
+      onDragEnd={(e) => handleDragEnd(e, bid, cid)}
+      onDragEnter={(e) => handleDragEnter(e, bid, cid)}
     >
       <div className="card_heading">{subject}</div>
       <div className="card_desc">{description}</div>

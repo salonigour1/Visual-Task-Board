@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Form from "./components/Form";
 import moment from "moment";
 import UpdateForm from "./components/UpdateForm";
+import UsersBoard from "./components/UsersBoard";
 function App() {
   const { boards } = useGobalData();
 
@@ -23,6 +24,7 @@ function App() {
         openEditable={openEditable}
         setOpenEditable={setOpenEditable}
       />
+      <UsersBoard />
       <div className="board_container ">
         {boards.map((curr) => (
           <Boards

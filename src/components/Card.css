@@ -8,3 +8,7 @@
   box-sizing: border-box;
   cursor: pointer;
 }
+.grab {
+  cursor: -webkit-grab;
+  cursor: grab;
+}

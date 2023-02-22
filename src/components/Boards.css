@@ -1,6 +1,6 @@
 .boards {
   width: 20vw;
-  height: auto;
+  height: 100vh;
   overflow-y: auto;
 }
 .boards_overflow {
@@ -25,10 +25,26 @@
 .subheading {
   font-weight: 600;
 }
+.delete_board {
+  cursor: pointer;
+  position: absolute;
+  right: 2%;
+  top: 2rem;
+  background-color: white;
+  border-radius: 5px;
+  padding: 0.5rem;
+  display: none;
+  box-shadow: 5px 5px 10px gray;
+  border: 2px solid rgb(244, 243, 243);
+}
+.visible_deleteBoard {
+  display: block;
+}
 .board_header {
   display: flex;
   justify-content: space-between;
   width: 95%;
+  position: relative;
   margin: auto;
   box-sizing: border-box;
   padding: 0.5rem;

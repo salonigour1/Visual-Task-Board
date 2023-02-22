@@ -30,6 +30,7 @@ const AppProvider = ({ children }) => {
     {
       bid: ReturnId("BRD"),
       name: "Beth Angles",
+      img: "https://media.istockphoto.com/id/1200677760/photo/portrait-of-handsome-smiling-young-man-with-crossed-arms.jpg?s=612x612&w=0&k=20&c=g_ZmKDpK9VEEzWw4vJ6O577ENGLTOcrvYeiLxi8mVuo=",
       cards: [
         {
           cid: ReturnId("TASK"),
@@ -64,6 +65,7 @@ const AppProvider = ({ children }) => {
     {
       bid: ReturnId("BRD"),
       name: "John Compton",
+      img: "https://media.istockphoto.com/id/1277873802/photo/portrait-of-a-mature-man-with-a-little-smile-at-the-camera-right-side-of-the-picture.jpg?b=1&s=170667a&w=0&k=20&c=5C_zLbh5cohuKby821RbHZTP87Ae5CvBmUoPvy1-SbI=",
       cards: [
         {
           cid: ReturnId("TASK"),
@@ -105,26 +107,71 @@ const AppProvider = ({ children }) => {
       ],
     },
   ]);
+  const [users, setUsers] = useState([
+    {
+      id: ReturnId("UID"),
+      name: "Saloni",
+      img: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
+    {
+      id: ReturnId("UID"),
+      name: "Aashi",
+      img: "https://media.istockphoto.com/id/1277873802/photo/portrait-of-a-mature-man-with-a-little-smile-at-the-camera-right-side-of-the-picture.jpg?b=1&s=170667a&w=0&k=20&c=5C_zLbh5cohuKby821RbHZTP87Ae5CvBmUoPvy1-SbI=",
+    },
+    {
+      id: ReturnId("UID"),
+      name: "Nikki",
+      img: "https://media.istockphoto.com/id/1200677760/photo/portrait-of-handsome-smiling-young-man-with-crossed-arms.jpg?s=612x612&w=0&k=20&c=g_ZmKDpK9VEEzWw4vJ6O577ENGLTOcrvYeiLxi8mVuo=",
+    },
+    {
+      id: ReturnId("UID"),
+      name: "Jarvis",
+      img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60",
+    },
+    {
+      id: ReturnId("UID"),
+      name: "Jenny",
+      img: "https://images.unsplash.com/photo-1617550541923-d244ae0035b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzJ8fGdpcmwlMjBmYWNlfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
+    },
+    {
+      id: ReturnId("UID"),
+      name: "Chrish",
+      img: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHVzZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60",
+    },
+    {
+      id: ReturnId("UID"),
+      name: "Patrick",
+      img: "https://i.pinimg.com/736x/c8/ff/88/c8ff88ba5d7c2844bfbeaaa0837d1de5.jpg",
+    },
+  ]);
 
   //--------------------------------------------------------
-  const handleDragEnd = (bid, cid) => {
+  const handleDragEnd = (e, bid, cid) => {
+    e.preventDefault();
     console.log("handleDragEnd", bid, cid);
-    let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
-    t_boardIndex = boards.findIndex((curr) => curr.bid === targetCard.boardId);
 
+    let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
+    s_boardIndex = boards.findIndex((curr) => curr.bid === bid);
+    if (s_boardIndex < 0) return;
+
+    s_cardIndex = boards[s_boardIndex].cards?.findIndex(
+      (curr) => curr.cid === cid
+    );
+    if (s_cardIndex < 0) return;
+
+    //.................................
+    t_boardIndex = boards.findIndex((curr) => curr.bid === targetCard.boardId);
     if (t_boardIndex < 0) return;
+    //.................................
+
     t_cardIndex = boards[t_boardIndex].cards?.findIndex(
       (curr) => curr.cid === targetCard.cardId
     );
 
     if (t_cardIndex < 0) return;
-    s_boardIndex = boards.findIndex((curr) => curr.bid === bid);
 
-    if (s_boardIndex < 0) return;
-    s_cardIndex = boards[s_boardIndex].cards?.findIndex(
-      (curr) => curr.cid === cid
-    );
-    if (s_cardIndex < 0) return;
+    //..................................
+
     console.log(bid, cid, targetCard.boardId, targetCard.cardId);
     console.log(s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex);
     const tempBoard = [...boards];
@@ -132,10 +179,12 @@ const AppProvider = ({ children }) => {
     tempBoard[s_boardIndex].cards.splice(s_cardIndex, 1);
     tempBoard[t_boardIndex].cards.splice(t_cardIndex, 0, tempCard);
     setBoards(tempBoard);
+    setTargetCard({ boardId: "", cardId: "" });
   };
 
   //--------------------------------------------------------
-  const handleDragEnter = (bid, cid) => {
+  const handleDragEnter = (e, bid, cid) => {
+    e.preventDefault();
     setTargetCard({ boardId: bid, cardId: cid });
     console.log("handleDragEnter", bid, cid);
   };
@@ -183,6 +232,23 @@ const AppProvider = ({ children }) => {
     });
     setBoards(newArray);
   };
+  //----------------------------------------------------------
+  const handleAddNewBoard = (name, img) => {
+    const newBoardInfo = {
+      bid: ReturnId("BRD"),
+      name: name,
+      img: img,
+      cards: [],
+    };
+    const tempArr = [...boards];
+    tempArr.splice(1, 0, newBoardInfo);
+    setBoards(tempArr);
+  };
+  //----------------------------------------------
+  const handleDeleteBoard = (bid) => {
+    const newArr = boards.filter((curr) => curr.bid !== bid);
+    setBoards(newArr);
+  };
   return (
     <AppContext.Provider
       value={{
@@ -191,9 +257,13 @@ const AppProvider = ({ children }) => {
         ReturnId,
         handleDelete,
         handleUpdateCard,
+        handleDeleteBoard,
         handleAddCard,
         handleDragEnd,
         handleDragEnter,
+        users,
+        setUsers,
+        handleAddNewBoard,
       }}
     >
       {children}

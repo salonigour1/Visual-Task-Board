@@ -1,0 +1,8 @@
+.userBoard {
+  width: 100vw;
+  height: auto;
+  background-color: rgb(201, 199, 199);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: start;
+}
