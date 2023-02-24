@@ -3,6 +3,7 @@ import { useGobalData } from "../context";
 import { IoIosAdd } from "react-icons/io";
 import "./Boards.css";
 import Card from "./Card";
+import { Droppable } from "react-beautiful-dnd";
 import { FiMoreVertical } from "react-icons/fi";
 function Boards({
   bid,
@@ -29,19 +30,7 @@ function Boards({
           <div className="subheading">
             {name}&nbsp;&nbsp;&nbsp;{cards.length} {bid}
           </div>
-          {/* <div>
-            <details>
-              <summary>
-                <FiMoreVertical
-                  size="25px"
-                  onClick={() => setDelete(!showDelete)}
-                />
-              </summary>
-              <div className="delete_board visible_deleteBoard">
-                Delete Board
-              </div>
-            </details>
-          </div> */}
+
           <div>
             <FiMoreVertical
               size="25px"
@@ -57,18 +46,37 @@ function Boards({
             Delete Board
           </div>
         </div>
-        <div className={cards.length <= 3 ? "boards" : "boards_overflow"}>
-          {cards.map((curr) => (
+        <Droppable droppableId={String(bid)}>
+          {(provided, snapshot) => (
             <div
-              onClick={() =>
-                setOpenEditable({ state: true, boardId: bid, cardId: curr.cid })
-              }
-              key={curr.cid}
+              className="boards"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
             >
-              <Card onClick={handleNa} key={curr.cid} {...curr} bid={bid} />
+              {cards.map((curr, index) => (
+                <div
+                  onClick={() =>
+                    setOpenEditable({
+                      state: true,
+                      boardId: bid,
+                      cardId: curr.cid,
+                    })
+                  }
+                  key={curr.cid}
+                >
+                  <Card
+                    onClick={handleNa}
+                    key={curr.cid}
+                    {...curr}
+                    id={bid}
+                    index={index}
+                  />
+                </div>
+              ))}
+              {provided.placeholder}
             </div>
-          ))}
-        </div>
+          )}
+        </Droppable>
 
         <div className="add_section">
           <div

@@ -7,6 +7,7 @@ import Form from "./components/Form";
 import moment from "moment";
 import UpdateForm from "./components/UpdateForm";
 import UsersBoard from "./components/UsersBoard";
+import { DragDropContext } from "react-beautiful-dnd";
 function App() {
   const { boards } = useGobalData();
 
@@ -17,27 +18,30 @@ function App() {
     cardId: "",
   });
 
+  const onDragEnd = () => {};
   return (
-    <div className="App">
-      <Form open={open} setOpen={setOpen} />
-      <UpdateForm
-        openEditable={openEditable}
-        setOpenEditable={setOpenEditable}
-      />
-      <UsersBoard />
-      <div className="board_container ">
-        {boards.map((curr) => (
-          <Boards
-            key={curr.bid}
-            {...curr}
-            setOpen={setOpen}
-            open={open}
-            openEditable={openEditable}
-            setOpenEditable={setOpenEditable}
-          />
-        ))}
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        <Form open={open} setOpen={setOpen} />
+        <UpdateForm
+          openEditable={openEditable}
+          setOpenEditable={setOpenEditable}
+        />
+        <UsersBoard />
+        <div className="board_container ">
+          {boards.map((curr) => (
+            <Boards
+              key={curr.bid}
+              {...curr}
+              setOpen={setOpen}
+              open={open}
+              openEditable={openEditable}
+              setOpenEditable={setOpenEditable}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </DragDropContext>
   );
 }
 

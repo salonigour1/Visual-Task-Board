@@ -54,7 +54,7 @@ function Form({ open, setOpen }) {
             &nbsp;<label>Title</label>
             <br></br>
             <input
-              value={values.subject}
+              value={values.subject || ""}
               name="subject"
               type="text"
               className="titleField"

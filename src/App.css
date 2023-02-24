@@ -14,9 +14,9 @@ html {
   display: flex;
   justify-content: space-around;
 }
-.App {
+/* .App {
   position: relative;
-}
+} */
 .add_btn {
   margin: 1rem;
   cursor: pointer;

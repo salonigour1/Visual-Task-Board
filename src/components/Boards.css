@@ -2,6 +2,7 @@
   width: 20vw;
   height: 100vh;
   overflow-y: auto;
+  background-color: bisque;
 }
 .boards_overflow {
   width: 20vw;
