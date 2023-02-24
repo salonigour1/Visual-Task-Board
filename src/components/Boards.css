@@ -2,7 +2,10 @@
   width: 20vw;
   height: 100vh;
   overflow-y: auto;
+  background-color: bisque;
+  margin: 2px;
 }
+
 .boards_overflow {
   width: 20vw;
   height: 79vh;
@@ -65,7 +68,4 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(148, 148, 148);
-}
-
-.overlay {
 }

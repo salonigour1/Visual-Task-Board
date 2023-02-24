@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import React from "react";
 const AppContext = React.createContext();
 
@@ -6,107 +6,16 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [targetCard, setTargetCard] = useState({ boardId: "", cardId: "" });
   const ReturnId = (prefix) => prefix + Math.trunc(Math.random() * 10000000000);
-  const [boards, setBoards] = useState([
-    {
-      bid: ReturnId("BRD"),
-      name: "No Assigned To",
-      cards: [
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-      ],
-    },
-    {
-      bid: ReturnId("BRD"),
-      name: "Beth Angles",
-      img: "https://media.istockphoto.com/id/1200677760/photo/portrait-of-handsome-smiling-young-man-with-crossed-arms.jpg?s=612x612&w=0&k=20&c=g_ZmKDpK9VEEzWw4vJ6O577ENGLTOcrvYeiLxi8mVuo=",
-      cards: [
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-      ],
-    },
-    {
-      bid: ReturnId("BRD"),
-      name: "John Compton",
-      img: "https://media.istockphoto.com/id/1277873802/photo/portrait-of-a-mature-man-with-a-little-smile-at-the-camera-right-side-of-the-picture.jpg?b=1&s=170667a&w=0&k=20&c=5C_zLbh5cohuKby821RbHZTP87Ae5CvBmUoPvy1-SbI=",
-      cards: [
-        {
-          cid: ReturnId("TASK"),
-          subject: "saloni",
-          description: "fine ass",
-          timeStamp: "23/04/2021",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-      ],
-    },
-    {
-      bid: ReturnId("BRD"),
-      name: "Erica Stevenson",
-      cards: [
-        { cid: ReturnId("TASK") },
-        { cid: ReturnId("TASK") },
-        { cid: ReturnId("TASK") },
-      ],
-    },
-  ]);
+  const [boards, setBoards] = useState([]);
+  useEffect(() => {
+    fetchBoard();
+  }, []);
+  const fetchBoard = async () => {
+    const response = await fetch("http://localhost:5000/boards");
+    const data = await response.json();
+    setBoards(data);
+    console.log(data);
+  };
   const [users, setUsers] = useState([
     {
       id: ReturnId("UID"),
@@ -146,12 +55,12 @@ const AppProvider = ({ children }) => {
   ]);
 
   //--------------------------------------------------------
-  const handleDragEnd = (e, bid, cid) => {
+  const handleDragEnd = (e, id, cid) => {
     e.preventDefault();
-    console.log("handleDragEnd", bid, cid);
+    console.log("handleDragEnd", id, cid);
 
     let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
-    s_boardIndex = boards.findIndex((curr) => curr.bid === bid);
+    s_boardIndex = boards.findIndex((curr) => curr.id === id);
     if (s_boardIndex < 0) return;
 
     s_cardIndex = boards[s_boardIndex].cards?.findIndex(
@@ -160,7 +69,7 @@ const AppProvider = ({ children }) => {
     if (s_cardIndex < 0) return;
 
     //.................................
-    t_boardIndex = boards.findIndex((curr) => curr.bid === targetCard.boardId);
+    t_boardIndex = boards.findIndex((curr) => curr.id === targetCard.boardId);
     if (t_boardIndex < 0) return;
     //.................................
 
@@ -172,7 +81,7 @@ const AppProvider = ({ children }) => {
 
     //..................................
 
-    console.log(bid, cid, targetCard.boardId, targetCard.cardId);
+    console.log(id, cid, targetCard.boardId, targetCard.cardId);
     console.log(s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex);
     const tempBoard = [...boards];
     const tempCard = tempBoard[s_boardIndex].cards[s_cardIndex];
@@ -183,71 +92,170 @@ const AppProvider = ({ children }) => {
   };
 
   //--------------------------------------------------------
-  const handleDragEnter = (e, bid, cid) => {
+  const handleDragEnter = (e, id, cid) => {
     e.preventDefault();
-    setTargetCard({ boardId: bid, cardId: cid });
-    console.log("handleDragEnter", bid, cid);
+    setTargetCard({ boardId: id, cardId: cid });
+    console.log("handleDragEnter", id, cid);
   };
   //-----------------------------------------------------
-  const handleAddCard = (bid, cardInfo) => {
-    console.log(bid, cardInfo);
-    const newArr = boards.map((curr) => {
-      if (curr.bid === bid) {
-        const newCards = [...curr.cards, cardInfo];
-        return { ...curr, cards: newCards };
-      } else {
-        return curr;
-      }
+  const handleAddCard = async (id, cardInfo) => {
+    console.log(id, cardInfo);
+
+    const updatedBoard = boards
+      .map((curr) => {
+        if (curr.id === id) {
+          const newCards = [...curr.cards, cardInfo];
+          return { ...curr, cards: newCards };
+        } else return curr;
+      })
+      .filter((curr) => curr.id === id)[0];
+    console.log(updatedBoard);
+
+    const response = await fetch(`http://localhost:5000/boards/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedBoard),
     });
-    console.log(newArr);
-    setBoards(newArr);
+    const data = await response.json();
+    setBoards(boards.map((curr) => (curr.id === id ? data : curr)));
   };
 
   //-------------------------------------------------------
-  const handleUpdateCard = (bid, cid, newInfo) => {
-    const newUpdateArray = boards.map((curr) => {
-      if (bid === curr.bid) {
-        const newCards = curr.cards.map((curr) => {
-          if (curr.cid === cid) {
-            return newInfo;
-          } else return curr;
-        });
-        return { ...curr, cards: newCards };
-      } else {
-        return curr;
-      }
+  const handleUpdateCard = async (id, cid, newInfo) => {
+    const updatedBoard = boards
+      .map((curr) => {
+        if (id === curr.id) {
+          const newCards = curr.cards.map((curr) => {
+            if (curr.cid === cid) {
+              return newInfo;
+            } else return curr;
+          });
+          return { ...curr, cards: newCards };
+        } else {
+          return curr;
+        }
+      })
+      .filter((curr) => curr.id === id)[0];
+    console.log(updatedBoard);
+    const response = await fetch(`http://localhost:5000/boards/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedBoard),
     });
-    setBoards(newUpdateArray);
+    const data = await response.json();
+    setBoards(boards.map((curr) => (curr.id === id ? data : curr)));
+
+    // setBoards(newUpdateArray);
   };
   //---------------------------------------------------------------------
-  const handleDelete = (bid, cid) => {
-    console.log(bid, cid);
-    const newArray = boards.map((curr) => {
-      if (bid === curr.bid) {
-        const newCards = curr.cards.filter((curr) => curr.cid !== cid);
-        return { ...curr, cards: newCards };
-      } else {
-        return curr;
-      }
+  const handleDeleteCard = async (id, cid) => {
+    console.log(id, cid);
+    const updatedBoard = boards
+      .map((curr) => {
+        if (id === curr.id) {
+          const newCards = curr.cards.filter((curr) => curr.cid !== cid);
+          return { ...curr, cards: newCards };
+        } else {
+          return curr;
+        }
+      })
+      .filter((curr) => curr.id === id)[0];
+    console.log(updatedBoard);
+    const response = await fetch(`http://localhost:5000/boards/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedBoard),
     });
-    setBoards(newArray);
+    const data = await response.json();
+    setBoards(boards.map((curr) => (curr.id === id ? data : curr)));
   };
   //----------------------------------------------------------
-  const handleAddNewBoard = (name, img) => {
+  const handleAddNewBoard = async (name, img) => {
     const newBoardInfo = {
-      bid: ReturnId("BRD"),
       name: name,
       img: img,
       cards: [],
     };
+    const response = await fetch(`http://localhost:5000/boards`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newBoardInfo),
+    });
+
+    const data = await response.json();
     const tempArr = [...boards];
-    tempArr.splice(1, 0, newBoardInfo);
+    tempArr.splice(1, 0, data);
     setBoards(tempArr);
+    // const [unassigned, ...otherBoards] = boards;
+    // console.log(unassigned, otherBoards);
   };
   //----------------------------------------------
-  const handleDeleteBoard = (bid) => {
-    const newArr = boards.filter((curr) => curr.bid !== bid);
-    setBoards(newArr);
+  const handleDeleteBoard = async (id) => {
+    if (window.confirm("Are you sure you want to delete the board?")) {
+      const response = await fetch(`http://localhost:5000/boards/${id}`, {
+        method: "DELETE",
+      });
+      const newArr = boards.filter((curr) => curr.id !== id);
+      setBoards(newArr);
+    }
+  };
+  //--------------------------------------------
+  const handleDragCard = async (
+    droppableIdStart,
+    droppableIdEnd,
+    draggableIndexStart,
+    draggableIndexEnd,
+    draggableId
+  ) => {
+    const cardInfo = boards.filter(
+      (curr) => curr.id === Number(droppableIdStart)
+    )[0].cards[draggableIndexStart];
+    console.log(cardInfo);
+    const abc = [
+      ...boards.filter((curr) => curr.id === Number(droppableIdEnd))[0].cards,
+    ];
+    console.log(abc.splice(draggableIndexEnd, 0, cardInfo));
+    console.log(abc);
+    const updatedBoardInfo = boards
+      .map((curr) =>
+        curr.id === Number(droppableIdEnd) ? { ...curr, cards: abc } : curr
+      )
+      .filter((curr) => curr.id === Number(droppableIdEnd))[0];
+    console.log(updatedBoardInfo);
+    const response = await fetch(
+      `http://localhost:5000/boards/${Number(droppableIdEnd)}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedBoardInfo),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    setBoards(
+      boards.map((curr) => (curr.id === Number(droppableIdEnd) ? data : curr))
+    );
+    console.log(boards);
+    handleDeleteCard(Number(droppableIdStart), draggableId);
+    // const sortedTargetBoard = boards.map((curr) => {
+    //   if (curr.id === Number(droppableIdEnd)) {
+    //     const temp = curr.cards;
+    //     console.log(temp.);
+    //     // console.log(curr.cards.splice(draggableIndexEnd, 0, curr));
+    //     return curr;
+    //   } else {
+    //     return curr;
+    //   }
+    // });
+    // console.log(sortedTargetBoard);
+    //
+    console.log(
+      droppableIdStart,
+      droppableIdEnd,
+      draggableIndexStart,
+      draggableIndexEnd,
+      draggableId
+    );
   };
   return (
     <AppContext.Provider
@@ -255,7 +263,7 @@ const AppProvider = ({ children }) => {
         loading,
         boards,
         ReturnId,
-        handleDelete,
+        handleDeleteCard,
         handleUpdateCard,
         handleDeleteBoard,
         handleAddCard,
@@ -264,6 +272,7 @@ const AppProvider = ({ children }) => {
         users,
         setUsers,
         handleAddNewBoard,
+        handleDragCard,
       }}
     >
       {children}

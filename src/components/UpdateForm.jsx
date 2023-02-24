@@ -7,8 +7,13 @@ import { HiSortDescending } from "react-icons/hi";
 import { TfiText } from "react-icons/tfi";
 import { useGobalData } from "../context";
 function UpdateForm({ setOpenEditable, openEditable }) {
-  const { ReturnId, handleAddCard, handleUpdateCard, handleDelete, boards } =
-    useGobalData();
+  const {
+    ReturnId,
+    handleAddCard,
+    handleUpdateCard,
+    handleDeleteCard,
+    boards,
+  } = useGobalData();
 
   const [currentValues, setCurrentValues] = useState({
     cid: "",
@@ -21,7 +26,7 @@ function UpdateForm({ setOpenEditable, openEditable }) {
   useEffect(() => {
     if (!openEditable.cardId) return;
     const arr = boards
-      .filter((curr) => openEditable.boardId === curr.bid)[0]
+      .filter((curr) => openEditable.boardId === curr.id)[0]
       .cards.filter((curr) => openEditable.cardId === curr.cid)[0];
     setCurrentValues(arr);
   }, [openEditable]);
@@ -110,7 +115,7 @@ function UpdateForm({ setOpenEditable, openEditable }) {
               className="add_btn"
               type="button"
               onClick={() => {
-                handleDelete(openEditable.boardId, openEditable.cardId);
+                handleDeleteCard(openEditable.boardId, openEditable.cardId);
                 setOpenEditable({ state: false, boardId: "", cardId: "" });
               }}
             >

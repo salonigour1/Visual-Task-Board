@@ -4,8 +4,9 @@ import { IoIosAdd } from "react-icons/io";
 import "./Boards.css";
 import Card from "./Card";
 import { FiMoreVertical } from "react-icons/fi";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 function Boards({
-  bid,
+  id,
   name,
   cards,
   setOpen,
@@ -23,63 +24,74 @@ function Boards({
   };
   const [showDelete, setDelete] = useState(false);
   return (
-    <>
+    <div>
       <div className="board">
         <div className="board_header">
           <div className="subheading">
-            {name}&nbsp;&nbsp;&nbsp;{cards.length} {bid}
+            {name}&nbsp;&nbsp;&nbsp;{cards.length} {id}
           </div>
-          {/* <div>
-            <details>
-              <summary>
-                <FiMoreVertical
-                  size="25px"
-                  onClick={() => setDelete(!showDelete)}
-                />
-              </summary>
-              <div className="delete_board visible_deleteBoard">
-                Delete Board
-              </div>
-            </details>
-          </div> */}
+
           <div>
             <FiMoreVertical
               size="25px"
               onClick={() => setDelete(!showDelete)}
             />
           </div>
+
           <div
             className={`delete_board ${
               showDelete ? "visible_deleteBoard" : ""
             }`}
-            onClick={() => handleDeleteBoard(bid)}
+            onClick={() => handleDeleteBoard(id)}
           >
             Delete Board
           </div>
         </div>
-        <div className={cards.length <= 3 ? "boards" : "boards_overflow"}>
-          {cards.map((curr) => (
+        {/* <div className={cards.length <= 3 ? "boards" : "boards_overflow"}> */}
+
+        <Droppable droppableId={String(id)}>
+          {(provided) => (
             <div
-              onClick={() =>
-                setOpenEditable({ state: true, boardId: bid, cardId: curr.cid })
-              }
-              key={curr.cid}
+              className="boards"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
             >
-              <Card onClick={handleNa} key={curr.cid} {...curr} bid={bid} />
+              {cards.map((curr, index) => (
+                <div
+                  onClick={() =>
+                    setOpenEditable({
+                      state: true,
+                      boardId: id,
+                      cardId: curr.cid,
+                    })
+                  }
+                  key={curr.cid}
+                >
+                  <Card
+                    onClick={handleNa}
+                    key={curr.cid}
+                    {...curr}
+                    id={id}
+                    index={index}
+                  />
+                </div>
+              ))}
+              {provided.placeholder}
             </div>
-          ))}
-        </div>
+          )}
+        </Droppable>
 
         <div className="add_section">
           <div
             className="add_btn"
-            onClick={() => setOpen({ state: true, boardId: bid })}
+            onClick={() => setOpen({ state: true, boardId: id })}
           >
             <IoIosAdd size="25px" /> <span>Add Card</span>
           </div>
         </div>
       </div>
-    </>
+      {/* </Droppable> */}
+    </div>
   );
 }
 

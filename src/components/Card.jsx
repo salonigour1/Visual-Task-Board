@@ -2,26 +2,33 @@ import React, { useState } from "react";
 import "./Card.css";
 import moment from "moment";
 import { useGobalData } from "../context";
-function Card({ bid, cid, subject, description, timeStamp, urgency }) {
+import { Draggable } from "react-beautiful-dnd";
+function Card({ id, index, cid, subject, description, timeStamp, urgency }) {
   const { handleDragEnd, handleDragEnter } = useGobalData();
   return (
-    <div
-      className="card grab"
-      draggable
-      onDragEnd={(e) => handleDragEnd(e, bid, cid)}
-      onDragEnter={(e) => handleDragEnter(e, bid, cid)}
-    >
-      <div className="card_heading">{subject}</div>
-      <div className="card_desc">{description}</div>
-      <div className="card_desc">{bid}</div>
-      <div>
-        <div>
-          <img />
+    <Draggable draggableId={String(cid)} index={index}>
+      {(provided) => (
+        <div
+          className="card"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          // onDragEnd={(e) => handleDragEnd(e, id, cid)}
+          // onDragEnter={(e) => handleDragEnter(e, id, cid)}
+        >
+          <div className="card_heading">{subject}</div>
+          <div className="card_desc">{description}</div>
+          <div className="card_desc">{id}</div>
+          <div>
+            <div>
+              <img />
+            </div>
+            <div>{cid}</div>
+            <div>{moment().startOf("day").fromNow()}</div>
+          </div>
         </div>
-        <div>{cid}</div>
-        <div>{moment().startOf("day").fromNow()}</div>
-      </div>
-    </div>
+      )}
+    </Draggable>
   );
 }
 
