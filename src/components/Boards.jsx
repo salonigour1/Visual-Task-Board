@@ -55,13 +55,13 @@ function Boards({
             >
               {cards.map((curr, index) => (
                 <div
-                  onClick={() =>
-                    setOpenEditable({
-                      state: true,
-                      boardId: bid,
-                      cardId: curr.cid,
-                    })
-                  }
+                  // onClick={() =>
+                  //   setOpenEditable({
+                  //     state: true,
+                  //     boardId: bid,
+                  //     cardId: curr.cid,
+                  //   })
+                  // }
                   key={curr.cid}
                 >
                   <Card

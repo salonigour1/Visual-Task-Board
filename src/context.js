@@ -8,7 +8,7 @@ const AppProvider = ({ children }) => {
   const ReturnId = (prefix) => prefix + Math.trunc(Math.random() * 10000000000);
   const [boards, setBoards] = useState([
     {
-      bid: ReturnId("BRD"),
+      bid: ReturnId("BID"),
       name: "No Assigned To",
       cards: [
         {
@@ -28,7 +28,7 @@ const AppProvider = ({ children }) => {
       ],
     },
     {
-      bid: ReturnId("BRD"),
+      bid: ReturnId("BID"),
       name: "Beth Angles",
       img: "https://media.istockphoto.com/id/1200677760/photo/portrait-of-handsome-smiling-young-man-with-crossed-arms.jpg?s=612x612&w=0&k=20&c=g_ZmKDpK9VEEzWw4vJ6O577ENGLTOcrvYeiLxi8mVuo=",
       cards: [
@@ -46,24 +46,10 @@ const AppProvider = ({ children }) => {
           timeStamp: "",
           urgency: "Low",
         },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
       ],
     },
     {
-      bid: ReturnId("BRD"),
+      bid: ReturnId("BID"),
       name: "John Compton",
       img: "https://media.istockphoto.com/id/1277873802/photo/portrait-of-a-mature-man-with-a-little-smile-at-the-camera-right-side-of-the-picture.jpg?b=1&s=170667a&w=0&k=20&c=5C_zLbh5cohuKby821RbHZTP87Ae5CvBmUoPvy1-SbI=",
       cards: [
@@ -88,22 +74,6 @@ const AppProvider = ({ children }) => {
           timeStamp: "",
           urgency: "Low",
         },
-        {
-          cid: ReturnId("TASK"),
-          subject: "",
-          description: "",
-          timeStamp: "",
-          urgency: "Low",
-        },
-      ],
-    },
-    {
-      bid: ReturnId("BRD"),
-      name: "Erica Stevenson",
-      cards: [
-        { cid: ReturnId("TASK") },
-        { cid: ReturnId("TASK") },
-        { cid: ReturnId("TASK") },
       ],
     },
   ]);
@@ -145,49 +115,39 @@ const AppProvider = ({ children }) => {
     },
   ]);
 
-  //--------------------------------------------------------
-  const handleDragEnd = (e, bid, cid) => {
-    e.preventDefault();
-    console.log("handleDragEnd", bid, cid);
+  //--------------------------------------------------------------------------
 
-    let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
-    s_boardIndex = boards.findIndex((curr) => curr.bid === bid);
-    if (s_boardIndex < 0) return;
-
-    s_cardIndex = boards[s_boardIndex].cards?.findIndex(
-      (curr) => curr.cid === cid
-    );
-    if (s_cardIndex < 0) return;
-
-    //.................................
-    t_boardIndex = boards.findIndex((curr) => curr.bid === targetCard.boardId);
-    if (t_boardIndex < 0) return;
-    //.................................
-
-    t_cardIndex = boards[t_boardIndex].cards?.findIndex(
-      (curr) => curr.cid === targetCard.cardId
-    );
-
-    if (t_cardIndex < 0) return;
-
-    //..................................
-
-    console.log(bid, cid, targetCard.boardId, targetCard.cardId);
-    console.log(s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex);
-    const tempBoard = [...boards];
-    const tempCard = tempBoard[s_boardIndex].cards[s_cardIndex];
-    tempBoard[s_boardIndex].cards.splice(s_cardIndex, 1);
-    tempBoard[t_boardIndex].cards.splice(t_cardIndex, 0, tempCard);
-    setBoards(tempBoard);
-    setTargetCard({ boardId: "", cardId: "" });
+  const handleDragCard = (
+    sourceId,
+    destinationId,
+    sourceIndex,
+    destinationIndex,
+    draggableId
+  ) => {
+    let cardInfo = {};
+    const newArr = boards
+      .map((curr) => {
+        if (curr.bid !== sourceId) {
+          return curr;
+        } else {
+          const cardArr = [...curr.cards];
+          cardInfo = cardArr.splice(sourceIndex, 1)[0];
+          return { ...curr, cards: cardArr };
+        }
+      })
+      .map((curr) => {
+        if (curr.bid !== destinationId) {
+          return curr;
+        } else {
+          const cardArr = [...curr.cards];
+          cardArr.splice(destinationIndex, 0, cardInfo);
+          return { ...curr, cards: cardArr };
+        }
+      });
+    console.log(newArr);
+    setBoards(newArr);
   };
 
-  //--------------------------------------------------------
-  const handleDragEnter = (e, bid, cid) => {
-    e.preventDefault();
-    setTargetCard({ boardId: bid, cardId: cid });
-    console.log("handleDragEnter", bid, cid);
-  };
   //-----------------------------------------------------
   const handleAddCard = (bid, cardInfo) => {
     console.log(bid, cardInfo);
@@ -259,11 +219,12 @@ const AppProvider = ({ children }) => {
         handleUpdateCard,
         handleDeleteBoard,
         handleAddCard,
-        handleDragEnd,
-        handleDragEnter,
+        // handleDragEnd,
+        // handleDragEnter,
         users,
         setUsers,
         handleAddNewBoard,
+        handleDragCard,
       }}
     >
       {children}
