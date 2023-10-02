@@ -43,19 +43,17 @@ function UsersBoard() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // if (!nameValue.first_name && nameValue.last_name) {
-    //   console.log('Please enter both name');
     //   return;
     // }
-    console.log('object drop here');
+
     const newUser = {
       name: nameValue.first_name + ' ' + nameValue.last_name,
       id: ReturnId('UID'),
     };
     setNameValue(newUser);
-    console.log('object drop here2');
     // dispatch(handleAddUser(newUser));
     dispatch(handleAddNewBoard(newUser));
-    console.log('object drop here2.4');
+
     setOpenAddUser(false);
     setNameValue({
       name: '',
@@ -63,7 +61,6 @@ function UsersBoard() {
       last_name: '',
       id: '',
     });
-    console.log('object drop here3');
   };
 
   return (

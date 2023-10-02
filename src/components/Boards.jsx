@@ -26,7 +26,6 @@ function Boards({
     if (name === 'No Assigned To') {
       return 'UA';
     }
-    console.log(name);
 
     const nameArr = name.split(' ');
     if (nameArr) {

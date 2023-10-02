@@ -31,7 +31,7 @@ export function handleAddUser(newUser) {
       type: type.HANDLE_ADD_USER,
       payload: [...usersArr, newInfo],
     });
-    console.log([...users, newInfo]);
+
     localStorage.setItem('users', JSON.stringify([...users, newInfo]));
     // handleAddNewBoard(newInfo.id, newInfo.name, newInfo.color);
   };
@@ -176,7 +176,7 @@ export function handleAddNewBoard(userInfo) {
       ...userInfo,
       color: colors[Math.trunc(Math.random() * colors.length)],
     };
-    console.log(newUserInfoComplete);
+
     const newBoardInfoComplete = {
       bid: 'BRD' + Math.trunc(Math.random() * 10000000000),
       name: newUserInfoComplete.name,
@@ -187,9 +187,7 @@ export function handleAddNewBoard(userInfo) {
     const updatedBoardArr = [...boardsArr];
     const updatedUserArr = [...usersArr, newUserInfoComplete];
 
-    console.log(updatedBoardArr);
     updatedBoardArr.splice(1, 0, newBoardInfoComplete);
-    console.log(updatedBoardArr);
 
     dispatch({
       type: type.HANDLE_ADD_NEW_BOARD,
