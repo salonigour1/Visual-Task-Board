@@ -1,63 +1,65 @@
-import React, { useState } from "react";
-import "./Form.css";
-import { RxCross1 } from "react-icons/rx";
-import moment from "moment";
-import { MdDateRange } from "react-icons/md";
-import { HiSortDescending } from "react-icons/hi";
-import { TfiText } from "react-icons/tfi";
-import { useGobalData } from "../context";
+import React, { useState } from 'react';
+import './Form.css';
+import { RxCross1 } from 'react-icons/rx';
+import moment from 'moment';
+import { MdDateRange } from 'react-icons/md';
+import { HiSortDescending } from 'react-icons/hi';
+import { TfiText } from 'react-icons/tfi';
+import { useDispatch } from 'react-redux';
+import { handleAddCard } from '../redux/action';
 function Form({ open, setOpen }) {
-  const { ReturnId, handleAddCard } = useGobalData();
+  const ReturnId = (prefix) => prefix + Math.trunc(Math.random() * 10000000000);
+
+  const dispatch = useDispatch();
   const [values, setValues] = useState({
-    cid: "",
-    subject: "",
-    description: "",
-    timeStamp: "",
-    urgency: "",
+    cid: '',
+    subject: '',
+    description: '',
+    timeStamp: '',
+    urgency: '',
   });
   const handleChange = (name, value) => {
-    // console.log(name, value);
     setValues({
       ...values,
       [name]: value,
-      timeStamp: moment().subtract(10, "days").calendar(),
-      cid: ReturnId("TASK"),
+      timeStamp: moment().format('YYYY-MM-D'),
+      cid: ReturnId('TASK'),
     });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    handleAddCard(open.boardId, values);
+    dispatch(handleAddCard(open.boardId, values));
     setValues({
-      cid: "",
-      subject: "",
-      description: "",
-      timeStamp: "",
-      urgency: "",
+      cid: '',
+      subject: '',
+      description: '',
+      timeStamp: '',
+      urgency: '',
     });
-    setOpen({ state: false, boardId: "" });
+    setOpen({ state: false, boardId: '' });
   };
   return (
-    <div className={open.state ? "check overlay" : "check"}>
-      <div className={`add_form ${open.state ? "visible" : ""}`}>
-        <div className="heading">Create New Task</div>
+    <div className={open.state ? 'check overlay' : 'check'}>
+      <div className={`add_form ${open.state ? 'visible' : ''}`}>
+        <div className='heading'>Create New Task</div>
         <hr></hr>
         <form onSubmit={handleSubmit}>
-          <div className="cross">
+          <div className='cross'>
             <RxCross1
-              size="25px"
-              onClick={() => setOpen({ state: false, boardId: "" })}
+              size='25px'
+              onClick={() => setOpen({ state: false, boardId: '' })}
             />
           </div>
           <div>
-            <TfiText size="20px" />
+            <TfiText size='20px' />
             &nbsp;<label>Title</label>
             <br></br>
             <input
-              value={values.subject || ""}
-              name="subject"
-              type="text"
-              className="titleField"
+              value={values.subject || ''}
+              name='subject'
+              type='text'
+              className='titleField'
               onChange={(e) => handleChange(e.target.name, e.target.value)}
             />
           </div>
@@ -67,18 +69,18 @@ function Form({ open, setOpen }) {
             <br />
             <textarea
               value={values.description}
-              name="description"
-              className="descField"
+              name='description'
+              className='descField'
               onChange={(e) => handleChange(e.target.name, e.target.value)}
             />
           </div>
-          <div className="bottomContainer">
+          <div className='bottomContainer'>
             <div>
               <label>Urgency:</label>
 
               <select
                 value={values.urgency}
-                name="urgency"
+                name='urgency'
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
               >
                 <option>Low</option>
@@ -89,14 +91,21 @@ function Form({ open, setOpen }) {
             <div>
               <MdDateRange />
               &nbsp;<label>Date</label>
-              <span className="date">
-                {moment().subtract(10, "days").calendar()}
+              <span className='date'>
+                {/* {moment().subtract(10, 'days').calendar()} */}
+                {moment().format('YYYY-MM-D')}
               </span>
             </div>
           </div>
-          <div className="buttonContainer">
-            <button className="add_btn" type="submit">
+          <div className='buttonContainer_Update'>
+            <button className='add_btn' type='submit'>
               Add Card
+            </button>
+            <button
+              className='add_btn'
+              onClick={() => setOpen({ state: false, boardId: '' })}
+            >
+              Cancel
             </button>
           </div>
         </form>

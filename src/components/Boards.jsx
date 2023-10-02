@@ -1,89 +1,116 @@
-import React, { useEffect, useState } from "react";
-import { useGobalData } from "../context";
-import { IoIosAdd } from "react-icons/io";
-import "./Boards.css";
-import Card from "./Card";
-import { Droppable } from "react-beautiful-dnd";
-import { FiMoreVertical } from "react-icons/fi";
+import React, { useEffect, useState } from 'react';
+
+import { IoIosAdd } from 'react-icons/io';
+import './Boards.css';
+import Card from './Card';
+import { Droppable } from 'react-beautiful-dnd';
+import { FiMoreVertical } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+import { handleDeleteBoard } from '../redux/action';
 function Boards({
   bid,
+
   name,
+  color,
   cards,
   setOpen,
   open,
   openEditable,
   setOpenEditable,
 }) {
-  const { boards, handleDeleteBoard } = useGobalData();
-  // console.log(openEditable);
-  const handleIt = () => {
-    console.log("klsjdl");
+  const dispatch = useDispatch();
+
+  // var str = 'Saloni';
+
+  const intialsName = (name) => {
+    if (name === 'No Assigned To') {
+      return 'UA';
+    }
+    console.log(name);
+
+    const nameArr = name.split(' ');
+    if (nameArr) {
+    }
+    let result = '';
+    nameArr.map((curr) => {
+      result = result + curr.charAt(0);
+      return 1;
+    });
+    return result.toUpperCase();
   };
-  const handleNa = () => {
-    console.log("handleNa");
-  };
+
   const [showDelete, setDelete] = useState(false);
+  const deleteBoard = (boardID) => {
+    dispatch(handleDeleteBoard(bid));
+  };
+
   return (
     <>
-      <div className="board">
-        <div className="board_header">
-          <div className="subheading">
-            {name}&nbsp;&nbsp;&nbsp;{cards.length} {bid}
-          </div>
-
-          <div>
-            <FiMoreVertical
-              size="25px"
-              onClick={() => setDelete(!showDelete)}
-            />
-          </div>
-          <div
-            className={`delete_board ${
-              showDelete ? "visible_deleteBoard" : ""
-            }`}
-            onClick={() => handleDeleteBoard(bid)}
-          >
-            Delete Board
-          </div>
-        </div>
-        <Droppable droppableId={String(bid)}>
-          {(provided, snapshot) => (
-            <div
-              className="boards"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {cards.map((curr, index) => (
-                <div
-                  // onClick={() =>
-                  //   setOpenEditable({
-                  //     state: true,
-                  //     boardId: bid,
-                  //     cardId: curr.cid,
-                  //   })
-                  // }
-                  key={curr.cid}
-                >
-                  <Card
-                    onClick={handleNa}
-                    key={curr.cid}
-                    {...curr}
-                    id={bid}
-                    index={index}
-                  />
-                </div>
-              ))}
-              {provided.placeholder}
+      <div className='board'>
+        <div className='bg_board'>
+          <div className='board_header'>
+            <div className='r_header'>
+              <div className='username_icon' style={{ backgroundColor: color }}>
+                {intialsName(name)}
+              </div>
+              <div className='subheading'>{name}</div>
             </div>
-          )}
-        </Droppable>
 
-        <div className="add_section">
+            <div className='r_header'>
+              <div>{cards.length}</div>
+              <FiMoreVertical
+                size='25px'
+                onClick={() => {
+                  return setDelete(!showDelete);
+                }}
+              />
+            </div>
+            <div
+              className={`delete_board ${
+                showDelete ? 'visible_deleteBoard' : ''
+              }`}
+              onClick={() => deleteBoard(bid)}
+            >
+              Delete Board
+            </div>
+          </div>
+          <Droppable droppableId={String(bid)}>
+            {(provided, snapshot) => (
+              <div
+                className='boards'
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {cards.map((curr, index) => (
+                  <div
+                    onClick={() =>
+                      setOpenEditable({
+                        state: true,
+                        boardId: bid,
+                        cardId: curr.cid,
+                      })
+                    }
+                    key={curr.cid}
+                  >
+                    <Card
+                      key={curr.cid}
+                      {...curr}
+                      id={bid}
+                      color={color}
+                      index={index}
+                      intialOfName={intialsName(name)}
+                    />
+                  </div>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
           <div
-            className="add_btn"
+            className='btn_add_card'
             onClick={() => setOpen({ state: true, boardId: bid })}
           >
-            <IoIosAdd size="25px" /> <span>Add Card</span>
+            <IoIosAdd size='25px' /> <span>Add Card</span>
           </div>
         </div>
       </div>

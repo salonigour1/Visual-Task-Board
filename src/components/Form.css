@@ -4,17 +4,18 @@
   background-color: white;
   width: 40vw;
   height: auto;
-  font-style: "Roboto";
-  flex-direction: column;
+  font-style: 'Roboto';
+  /* flex-direction: column; */
   display: none;
   position: absolute;
   left: 25%;
-  top: 5%;
+  top: 60px;
   z-index: 12;
-  box-shadow: 5px 5px 20px 15px rgb(188, 188, 188);
+  box-shadow: 1px 5px 5px 5px rgb(102, 101, 101);
 }
 .visible {
   display: flex;
+  flex-direction: column;
 }
 .titleField {
   width: 90%;
@@ -31,7 +32,7 @@
   top: 0%;
   left: 0%;
   width: 100vw;
-  height: 100vh;
+  height: 2000vh;
   display: none;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0);
@@ -50,6 +51,9 @@
 .overlay {
   display: block;
   backdrop-filter: blur(5px);
+  width: 100vw;
+  height: 100vh;
+
   /* background-color: rgba(255, 255, 255, 0.7); */
 }
 .cross {
@@ -94,4 +98,5 @@ select {
 }
 .buttonContainer_Update {
   display: flex;
+  margin: 0.5rem;
 }

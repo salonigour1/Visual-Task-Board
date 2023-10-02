@@ -1,14 +1,56 @@
 .card {
   width: 95%;
-  height: 8rem;
+  height: auto;
   margin: 0.5rem auto;
   padding: 0.5rem;
   background-color: white;
   border-radius: 0.2rem;
   box-sizing: border-box;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .grab {
   cursor: -webkit-grab;
   cursor: grab;
+}
+.card_heading {
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding-bottom: 3px;
+}
+.card_desc {
+  font-size: 1rem;
+}
+.urgency {
+  /* background-color: blue; */
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  margin: 3px;
+}
+.username_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(131, 131, 132);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+}
+.card_footer {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  justify-content: space-between;
+}
+.timestamp {
+  color: grey;
+  font-size: 10px;
+  margin: 3px;
+}
+.flex {
+  display: flex;
 }
